@@ -13,7 +13,7 @@ env:
 script:
   - npm test
 after_success:
-  - git submodule add -b gh-pages https://"${GH_OAUTH_TOKEN}">@github.com/"${GH_OWNER}"/"${GH_PROJECT_NAME}" site > /dev/null 2>&1
+  - git submodule add -b gh-pages https://${GH_OAUTH_TOKEN}>@github.com/${GH_OWNER}/${GH_PROJECT_NAME} site > /dev/null 2>&1
   - cd site
   - if git checkout gh-pages; then git checkout -b gh-pages; fi
   - git rm -r .
@@ -23,4 +23,4 @@ after_success:
   - git config user.email "sawchuk@gmail.com"
   - git config user.name "stephenplusplus"
   - git commit -am "building gh-pages [ci skip]"
-  - git push https://"${GH_OAUTH_TOKEN}">@github.com/"${GH_OWNER}"/"${GH_PROJECT_NAME}" HEAD:gh-pages > /dev/null 2>&1
+  - git push https://${GH_OAUTH_TOKEN}>@github.com/${GH_OWNER}/${GH_PROJECT_NAME} HEAD:gh-pages > /dev/null 2>&1
