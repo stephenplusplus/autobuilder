@@ -2,3 +2,25 @@ language:
   node_js
 node_js:
   - 0.10
+branches:
+  only:
+    - master
+env:
+  global:
+    - secure: "Sfd9NOqY0k9RJDP2IeKS1tUOR9mNg88dDWl5mr9AivkqbFUY/F6IBQ91UAa+NZzL6xy2TefuMx0fupd5Vze6hEwADb5Yz/jwqMQ7aqU3D5s1V4BRGo/hejbXrBXa1CZZDnRLvTXUaeV7mIB6RehnfSGWRB/EP5UPEuv4b2masw0="
+    - GH_OWNER: stephenplusplus
+    - GH_PROJECT_NAME: autobuilder
+script:
+  - npm test
+after_success:
+  - git submodule add -b gh-pages https://<%="${GH_OAUTH_TOKEN}"%>@github.com/<%="${GH_OWNER}"%>/<%="${GH_PROJECT_NAME}"%> site > /dev/null 2>&1
+  - cd site
+  - if git checkout gh-pages; then git checkout -b gh-pages; fi
+  - git rm -r .
+  - cp -R ../docs/html/* .
+  - cp ../docs/html/.* .
+  - git add -f .
+  - git config user.email "sawchuk@gmail.com"
+  - git config user.name "stephenplusplus"
+  - git commit -am "building gh-pages [ci skip]"
+  - git push https://<%="${GH_OAUTH_TOKEN}"%>@github.com/<%="${GH_OWNER}"%>/<%="${GH_PROJECT_NAME}"%> HEAD:gh-pages > /dev/null 2>&1
